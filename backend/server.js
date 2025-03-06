@@ -28,14 +28,17 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/user", userRoutes);
 
 //connect to database
-mongoose
-  .connect(process.env.MONG_URI)
-  .then(() => {
-    //listen for requests
-    app.listen(process.env.PORT, () => {
-      console.log("Connected to DB & listening on port", process.env.PORT);
+if (process.env.NODE_ENV !== "test") {
+  mongoose
+    .connect(process.env.MONG_URI)
+    .then(() => {
+      //listen for requests
+      app.listen(process.env.PORT, () => {
+        console.log("Connected to DB & listening on port", process.env.PORT);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
     });
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+}
+module.exports = app; // Export app for testing
