@@ -77,6 +77,20 @@ describe("Account Controller", () => {
       expect(res.statusCode).toBe(404);
       expect(res._getJSONData()).toEqual({ error: "No such account" });
     });
+
+    it("should return 404 for a non-existent account ID", async () => {
+      const req = httpMocks.createRequest({
+        params: { id: "66a9949c468dde0ff047cc76" },
+      });
+      const res = httpMocks.createResponse();
+
+      Account.findById = jest.fn().mockResolvedValue(null);
+
+      await accountController.getAccount(req, res);
+
+      expect(res.statusCode).toBe(404);
+      expect(res._getJSONData()).toEqual({ error: "No such account" });
+    });
   });
 
   describe("Create Account", () => {
@@ -122,6 +136,28 @@ describe("Account Controller", () => {
         emptyFields: ["acc_name", "acc_type"],
       });
     });
+
+    it("should return 400 if there is a database error during account creation", async () => {
+      const req = httpMocks.createRequest({
+        body: {
+          acc_name: "New Account",
+          acc_number: "123456789",
+          acc_type: "Savings",
+          balance: 5000,
+        },
+        user: { _id: "user123" },
+      });
+      const res = httpMocks.createResponse();
+
+      // Mock Account.create to throw an error
+      Account.create = jest.fn().mockRejectedValue(new Error("Database error"));
+
+      await accountController.createAccount(req, res);
+
+      // Assert that the response status is 400
+      expect(res.statusCode).toBe(400);
+      expect(res._getJSONData()).toEqual({ error: "Database error" });
+    });
   });
 
   describe("Delete Account", () => {
@@ -139,6 +175,18 @@ describe("Account Controller", () => {
 
       expect(res.statusCode).toBe(200);
       expect(res._getJSONData()).toEqual({ _id: "66adc6d823ff9e638ae1a823" });
+    });
+
+    it("should return 404 for an invalid account ID", async () => {
+      const req = httpMocks.createRequest({ params: { id: "invalid123" } });
+      const res = httpMocks.createResponse();
+
+      Account.findOneAndDelete = jest.fn().mockResolvedValue(null);
+
+      await accountController.deleteAccount(req, res);
+
+      expect(res.statusCode).toBe(404);
+      expect(res._getJSONData()).toEqual({ error: "No such account" });
     });
 
     it("should return 400 if account does not exist", async () => {
@@ -176,6 +224,21 @@ describe("Account Controller", () => {
         _id: "66a9b2bedcc7791b6179efcd",
         acc_name: "Updated Name",
       });
+    });
+
+    it("should return 404 for an invalid account ID", async () => {
+      const req = httpMocks.createRequest({
+        params: { id: "invalid123" },
+        body: { acc_name: "Updated Name" },
+      });
+      const res = httpMocks.createResponse();
+
+      Account.findOneAndUpdate = jest.fn().mockResolvedValue(null);
+
+      await accountController.updateAccount(req, res);
+
+      expect(res.statusCode).toBe(404);
+      expect(res._getJSONData()).toEqual({ error: "No such account" });
     });
 
     it("should return 400 if account does not exist", async () => {
