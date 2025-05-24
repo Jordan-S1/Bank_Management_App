@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api": "https://bank-management-app-server.onrender.com",
+      "/api": "http://localhost:4000",
     },
   },
 });
