@@ -4,7 +4,7 @@
 
 ## Overview
 
-A web-based bank management application built with the MERN stack, Vite, and Tailwind CSS. This app allows users to manage bank accounts, perform transactions, and view account details. It provides a secure and intuitive interface for customers. The app also includes a dark/light mode feature for enhanced user experience.
+A web-based bank management application built with the MERN stack, Vite, and Tailwind CSS. This app allows users to manage bank accounts, perform transactions, and view account details. It provides a secure and intuitive interface for customers. The app also includes a dark/light mode feature for enhanced user experience. Here is the live site: https://bank-management-app-k1yf.onrender.com
 
 ## Features
 

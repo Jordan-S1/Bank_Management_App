@@ -14,12 +14,7 @@ const app = express();
 app.use(express.json());
 
 //middleware to handle CORS policy
-app.use(
-  cors({
-    origin: "https://bank-management-app-k1yf.onrender.com",
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
