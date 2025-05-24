@@ -5,7 +5,7 @@ const accountRoutes = require("./routes/accounts");
 const paymentRoutes = require("./routes/payments");
 const transactionRoutes = require("./routes/transactions");
 const userRoutes = require("./routes/user");
-//const cors = require("cors");
+const cors = require("cors");
 
 //express app
 const app = express();
@@ -14,7 +14,12 @@ const app = express();
 app.use(express.json());
 
 //middleware to handle CORS policy
-//app.use(cors());
+app.use(
+  cors({
+    origin: "https://bank-management-app-k1yf.onrender.com",
+    credentials: true,
+  })
+);
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
