@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaCreditCard } from "react-icons/fa6";
 import { useAuthContext } from "../hooks/useAuthContext";
+const API_URL = "https://bank-management-app-server.onrender.com/api";
 
 const Payments = () => {
   const { user } = useAuthContext();
@@ -11,7 +12,7 @@ const Payments = () => {
 
   useEffect(() => {
     const fetchPayments = async () => {
-      const response = await fetch("/api/payments", {
+      const response = await fetch(`${API_URL}/payments`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const json = await response.json();

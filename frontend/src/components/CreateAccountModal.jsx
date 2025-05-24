@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaCreditCard } from "react-icons/fa6";
 import { useAccountsContext } from "../hooks/useAccountsContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+const API_URL = "https://bank-management-app-server.onrender.com/api";
 
 const CreateAccountModal = ({ isOpen, onClose }) => {
   const { dispatch } = useAccountsContext();
@@ -29,7 +30,7 @@ const CreateAccountModal = ({ isOpen, onClose }) => {
     const acc_number = generateAccNumber();
     const account = { acc_name, acc_number, acc_type, balance };
 
-    const response = await fetch("/api/accounts", {
+    const response = await fetch(`${API_URL}/accounts`, {
       method: "POST",
       body: JSON.stringify(account),
       headers: {

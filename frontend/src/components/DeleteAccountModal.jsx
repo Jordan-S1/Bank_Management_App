@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { useAccountsContext } from "../hooks/useAccountsContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+const API_URL = "https://bank-management-app-server.onrender.com/api";
 
 const DeleteAccountModal = ({ isOpen, onClose }) => {
   const { dispatch } = useAccountsContext();
@@ -14,7 +15,7 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     const fetchAccounts = async () => {
-      const response = await fetch("/api/accounts", {
+      const response = await fetch(`${API_URL}/accounts`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const json = await response.json();
@@ -44,7 +45,7 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
       return;
     }
 
-    const response = await fetch("/api/accounts/" + selectedAccountId, {
+    const response = await fetch(`${API_URL}/accounts/${selectedAccountId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${user.token}`,

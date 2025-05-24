@@ -3,6 +3,8 @@ import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { useAccountsContext } from "../hooks/useAccountsContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
+const API_URL = "https://bank-management-app-server.onrender.com/api";
+
 const TransactionModal = ({ isOpen, onClose }) => {
   const { dispatch } = useAccountsContext();
   const { user } = useAuthContext();
@@ -20,7 +22,7 @@ const TransactionModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     const fetchAccounts = async () => {
-      const response = await fetch("/api/accounts", {
+      const response = await fetch(`${API_URL}/accounts`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const json = await response.json();
@@ -209,7 +211,7 @@ const TransactionModal = ({ isOpen, onClose }) => {
         return;
     }
     try {
-      const transactionResponse = await fetch("/api/transactions", {
+      const transactionResponse = await fetch(`${API_URL}/transactions`, {
         method: "POST",
         body: JSON.stringify(transactionDetails),
         headers: {
@@ -232,15 +234,18 @@ const TransactionModal = ({ isOpen, onClose }) => {
       if (shouldUpdateAccount) {
         if (transaction === "Transfer") {
           //logic for updating selectedAccount and transferTo
-          const response1 = await fetch("/api/accounts/" + selectedAccount, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${user.token}`,
-            },
-            body: JSON.stringify(updatedAccount[0].update),
-          });
-          const response2 = await fetch("/api/accounts/" + transferTo, {
+          const response1 = await fetch(
+            `${API_URL}/accounts/${selectedAccount}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+              },
+              body: JSON.stringify(updatedAccount[0].update),
+            }
+          );
+          const response2 = await fetch(`${API_URL}/accounts/${transferTo}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -262,14 +267,17 @@ const TransactionModal = ({ isOpen, onClose }) => {
             dispatch({ type: "UPDATE_ACCOUNT", payload: json2 });
           }
         } else {
-          const response = await fetch("/api/accounts/" + selectedAccount, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${user.token}`,
-            },
-            body: JSON.stringify(updatedAccount.update),
-          });
+          const response = await fetch(
+            `${API_URL}/accounts/${selectedAccount}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+              },
+              body: JSON.stringify(updatedAccount.update),
+            }
+          );
 
           const json = await response.json();
 
@@ -284,7 +292,7 @@ const TransactionModal = ({ isOpen, onClose }) => {
         }
       }
       if (transaction === "Payment") {
-        const paymentResponse = await fetch("/api/payments", {
+        const paymentResponse = await fetch(`${API_URL}/payments`, {
           method: "POST",
           body: JSON.stringify(paymentDetails),
           headers: {

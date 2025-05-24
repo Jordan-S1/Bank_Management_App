@@ -11,6 +11,7 @@ import TransactionModal from "../components/TransactionModal";
 import { FaCreditCard, FaWallet } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
+const API_URL = "https://bank-management-app-server.onrender.com/api";
 
 const Dashboard = () => {
   const { accounts, totalBalance, accountCount, dispatch } =
@@ -24,7 +25,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchAccounts = async () => {
-      const response = await fetch("/api/accounts", {
+      const response = await fetch(`${API_URL}/accounts`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const json = await response.json();

@@ -3,6 +3,8 @@ import { FaEdit } from "react-icons/fa";
 import { useAccountsContext } from "../hooks/useAccountsContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
+const API_URL = "https://bank-management-app-server.onrender.com/api";
+
 const UpdateAccountModal = ({ isOpen, onClose }) => {
   const { dispatch } = useAccountsContext();
   const { user } = useAuthContext();
@@ -16,7 +18,7 @@ const UpdateAccountModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     const fetchAccounts = async () => {
-      const response = await fetch("/api/accounts", {
+      const response = await fetch(`${API_URL}/accounts`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const json = await response.json();
@@ -58,7 +60,7 @@ const UpdateAccountModal = ({ isOpen, onClose }) => {
 
     const account = { acc_name, acc_type };
 
-    const response = await fetch("/api/accounts/" + selectedAccountId, {
+    const response = await fetch(`${API_URL}/accounts/${selectedAccountId}`, {
       method: "PUT",
       body: JSON.stringify(account),
       headers: {
